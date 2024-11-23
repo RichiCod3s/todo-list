@@ -1,4 +1,36 @@
 body {
-    background-color: rebeccapurple;
+    margin: 0;
   }
   
+  .container{
+    height: 100vh;
+  }
+  .nav{
+    height: 5rem;
+    background-color: rebeccapurple;
+    text-align: center;
+    align-content: center;
+  }
+
+  .nav div{
+    font-size: 3rem;
+  }
+
+  .content{
+    display: grid;
+    height: 100vh;
+    width: 100vw;
+    grid-template-columns: 1fr 4fr;
+    background-color: brown;
+  }
+  .sidebar{
+    background-color:rgb(231, 221, 221);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+  .todo-container{
+    background-color: whitesmoke;
+  }
+
