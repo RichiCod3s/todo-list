@@ -4,9 +4,33 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Webpack Template</title>
+    <title>Todo-List</title>
   <script defer src="main.js"></script></head>
   <body>
-    
+    <div class="container"> 
+      <div class="nav">
+        <div class="title">Todo App</div>
+
+      </div>
+      <div class=" content">
+        <div class="sidebar">
+          <button id="addTaskButton">Add Task</button>
+          <button>Button2</button>
+          <button>Button3</button>
+        </div>
+        <div class="todo-container" ></div>
+        <dialog class="modal" id="modal">
+          <form class="taskForm" method="dialog">
+            <label for="title">Title</label><br>
+            <input type="text" id="title" placeholder="Title"><br>
+            <label for="task-description">Description</label><br>
+            <textarea id="task-description" rows="5" cols="30" placeholder="Add more details about your task..."></textarea>
+            <button type="input"  id="task-submit-button"> Create Task</button>
+          </form>
+         
+        </dialog>
+  
+      </div>
+    </div>
   </body>
   </html>
