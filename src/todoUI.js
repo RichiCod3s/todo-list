@@ -1,46 +1,53 @@
 //DOM Related Module
 import { todoList } from "./todo";
-import { createTodoItem } from "./todo";
 import { addTodo } from "./todo";
-//6. todo card to populate the ".todo-container" (look back at library app)
+import { Todo } from "./todo";
+import { createElementWithClass } from "./utils";
 
+//6. DOM Elements
 const todoContainer = document.querySelector(".todo-container");
-
-export function displayTodo(){
-    todoContainer.innerHTML ="";
-
-    for(let i =0; i< todoList.length; i++){
-        todoContainer.append(todoList[i]);
-    }
-}
-
-//modal click
 const createTaskButton = document.querySelector("#addTaskButton");
 const modal = document.querySelector("#modal");
 const taskSubmitButton = document.querySelector("#task-submit-button");
+const taskTitle = document.querySelector("#title");
+const taskDescription = document.querySelector("#task-description");
 
-export function setUpModal(){
+
+// show modal when addTaskbtn clicked
+export function setUpModal() {
     createTaskButton.addEventListener('click', () => {
         modal.showModal();
     })
 }
 
 
-//5. connect modal with task object - task to show in todo-container
-const taskTitle = document.querySelector("#title");
-const taskDescription = document.querySelector("#task-description");
-
-// create ne todoItem when submit button clicked
+// create a Todo object using modal
 taskSubmitButton.addEventListener('click', () => {
-     let title = taskTitle.value;
-     let description = taskDescription.value;
-   let todoItem = createTodoItem(title, description);
-    console.log(todoItem);
-    
-    addTodo(todoItem);
-    displayTodo();
+    let title = taskTitle.value;
+    let description = taskDescription.value;
+    const newTodo = new Todo(title, description);
+    addTodo(newTodo);
+    console.log(newTodo);
+    displayTodos();
     // clear form text fields
     taskTitle.value = "";
-    taskDescription.value ="";
+    taskDescription.value = "";
 })
 
+//ADD A DATA ATRIBUTE/ID TO THE ELEMENT SO YOU CAN DELETE - CHECK LIBRARY APP
+// renders Todo object into DOM element
+function renderTodoItem(todo) {
+    let todoTitle = createElementWithClass("h3", "todoTitle", todo.title);
+    let todoDescription = createElementWithClass("p", "todoDescription", todo.description);
+    let todoItem = createElementWithClass("div", "todoItem");
+    todoItem.append(todoTitle, todoDescription);
+    return todoItem;
+}
+
+//display the Todos to container
+export function displayTodos() {
+    todoContainer.innerHTML = "";
+    todoList.forEach(todo => {
+        todoContainer.append(renderTodoItem(todo));
+    })
+}
