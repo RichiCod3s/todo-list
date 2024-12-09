@@ -46,7 +46,15 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
+    align-items: center;    
+  }
+  .modal{
+    width: 60rem;
+    height: 50rem;
+  }
 
-    
+  /*<br> in HTML form- remove when impoving the UI */
+  .taskForm{
+    display: flex;
+    flex-direction: column;
   }

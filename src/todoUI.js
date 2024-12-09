@@ -11,6 +11,7 @@ const modal = document.querySelector("#modal");
 const taskSubmitButton = document.querySelector("#task-submit-button");
 const taskTitle = document.querySelector("#title");
 const taskDescription = document.querySelector("#task-description");
+const taskDueDate = document.querySelector("#datepicker");
 
 
 // show modal when addTaskbtn clicked
@@ -25,7 +26,8 @@ export function setUpModal() {
 taskSubmitButton.addEventListener('click', () => {
     let title = taskTitle.value;
     let description = taskDescription.value;
-    const newTodo = new Todo(title, description);
+    let dueDate = taskDueDate.value;
+    const newTodo = new Todo(title, description, dueDate);
     addTodo(newTodo);
     console.log(newTodo);
     displayTodos();
@@ -39,8 +41,9 @@ taskSubmitButton.addEventListener('click', () => {
 function renderTodoItem(todo) {
     let todoTitle = createElementWithClass("h3", "todoTitle", todo.title);
     let todoDescription = createElementWithClass("p", "todoDescription", todo.description);
+    let todoDueDate = createElementWithClass("p", "todoDueDate", todo.dueDate);   // works - make more readable (date-fns)
     let todoItem = createElementWithClass("div", "todoItem");
-    todoItem.append(todoTitle, todoDescription);
+    todoItem.append(todoTitle, todoDescription, todoDueDate);
     return todoItem;
 }
 
