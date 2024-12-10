@@ -14,7 +14,7 @@ console.log(greeting);
 //8. work on projects and to-do functionality 
 
 
-// work on the Todo class extra properties/functions
+// work on projects
 
 
 //modal click
