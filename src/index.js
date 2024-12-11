@@ -1,7 +1,7 @@
 
+import "./todoUI.js";
 import "./styles.css";
 import { greeting } from "./greeting.js";
-import { setUpModal } from "./todoUI.js";
 console.log(greeting);
 
 //1. make a layout - html/grid *
@@ -14,8 +14,5 @@ console.log(greeting);
 //8. work on projects and to-do functionality 
 
 
-// work on projects
+// work on projects - add the project to the sidebar - a div. When you click the div it should show the tasks added to that project.
 
-
-//modal click
-setUpModal();

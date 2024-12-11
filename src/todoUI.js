@@ -1,12 +1,14 @@
 //DOM Related Module
-import { todoList } from "./todo";
+import { Project } from "./project";
 import { addTodo } from "./todo";
 import { Todo } from "./todo";
+import { todoList } from "./todo";
 import { createElementWithClass } from "./utils";
 
 //6. DOM Elements
 const todoContainer = document.querySelector(".todo-container");
 const createTaskButton = document.querySelector("#addTaskButton");
+const createProjectButton = document.querySelector("#addProjectButton");
 const modal = document.querySelector("#modal");
 const taskSubmitButton = document.querySelector("#task-submit-button");
 const taskTitle = document.querySelector("#title");
@@ -14,13 +16,15 @@ const taskDescription = document.querySelector("#task-description");
 const taskDueDate = document.querySelector("#datepicker");
 const taskPriority = document.querySelector("#priority");
 
+const projectSidebar = document.querySelector(".projects-sidebar");
+
 
 // show modal when addTaskbtn clicked
-export function setUpModal() {
+
     createTaskButton.addEventListener('click', () => {
         modal.showModal();
     })
-}
+
 
 
 // create a Todo object using modal
@@ -57,3 +61,31 @@ export function displayTodos() {
         todoContainer.append(renderTodoItem(todo));
     })
 }
+
+// projects
+
+//add a project
+createProjectButton.addEventListener('click', () =>{
+    //create textbox and append to DOM
+    if(!document.querySelector('.projectTextbox')){
+    let projectTextbox = createElementWithClass("INPUT","projectTextbox");
+    projectTextbox.setAttribute("type", "text");
+    projectTextbox.setAttribute("placeholder", "Type project name and press 'Enter'");
+
+    //append to sidebar
+    projectSidebar.append(projectTextbox);
+    
+
+    //listen for enter key and add the project
+    projectTextbox.addEventListener('keydown', (e) => {
+        if(e.key === "Enter"){
+            console.log("enter pressed");
+            let projectName = projectTextbox.value;
+            const newProject = new Project(projectName);
+            projectTextbox.value="";
+            projectSidebar.removeChild(projectTextbox);
+            console.log(newProject);
+        }
+    })
+  }
+})
