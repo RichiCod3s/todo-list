@@ -1,5 +1,6 @@
 //DOM Related Module
 import { Project } from "./project";
+import { projectList } from "./project";
 import { addTodo } from "./todo";
 import { Todo } from "./todo";
 import { todoList } from "./todo";
@@ -17,6 +18,7 @@ const taskDueDate = document.querySelector("#datepicker");
 const taskPriority = document.querySelector("#priority");
 
 const projectSidebar = document.querySelector(".projects-sidebar");
+
 
 
 // show modal when addTaskbtn clicked
@@ -62,9 +64,9 @@ export function displayTodos() {
     })
 }
 
-// projects
+// PROJECTS
 
-//add a project
+//user add a project functionality 
 createProjectButton.addEventListener('click', () =>{
     //create textbox and append to DOM
     if(!document.querySelector('.projectTextbox')){
@@ -79,13 +81,51 @@ createProjectButton.addEventListener('click', () =>{
     //listen for enter key and add the project
     projectTextbox.addEventListener('keydown', (e) => {
         if(e.key === "Enter"){
-            console.log("enter pressed");
+            console.log("enter pressed");// remove later
             let projectName = projectTextbox.value;
             const newProject = new Project(projectName);
+            //add project to array
+            projectList.push(newProject);
+
+            displayProjectSection();
+
+           
+            //clear and remove textbox from sidebar
             projectTextbox.value="";
             projectSidebar.removeChild(projectTextbox);
-            console.log(newProject);
+            console.log(newProject); // remove later
         }
     })
   }
 })
+
+
+function renderProjectSection(project){
+    let projectSection =  createElementWithClass("div","projectSection",project.name);
+    projectSection.setAttribute("dataid", project.id);
+
+    return projectSection;
+}
+
+function displayProjectSection(){
+    projectList.forEach(project =>{
+        projectSidebar.append(renderProjectSection(project));
+    })
+}
+
+
+// project clicked
+//Tip!: use container as eventhandler for dynamically added DOMS
+projectSidebar.addEventListener("click", (e) => {
+    // Check if the clicked element is a projectSection
+    if (e.target && e.target.classList.contains('projectSection')) {
+        console.log("PROJECT SECTION CLICKED");
+        //change to show todos in project array in the todoContainer
+    }
+});
+
+
+//create prebuilt project
+const allTodos = new Project("All Todos");
+projectList.push(allTodos);
+displayProjectSection();
