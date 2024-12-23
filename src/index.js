@@ -2,6 +2,7 @@
 import "./todoUI.js";
 import "./styles.css";
 import { greeting } from "./greeting.js";
+import { prebuiltProject } from "./todoUI.js";
 console.log(greeting);
 
 //1. make a layout - html/grid *
@@ -14,5 +15,7 @@ console.log(greeting);
 //8. work on projects and to-do functionality 
 
 
-// work on projects - add the project to the sidebar - a div. When you click the div it should show the tasks added to that project.
+// work on projects: add project option to todos - todo will display when project div is clicked on
+// continue next: added hashmap to hold todos in project. Use this to add/delete & display todos 
 
+prebuiltProject();

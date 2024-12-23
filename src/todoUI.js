@@ -16,9 +16,10 @@ const taskTitle = document.querySelector("#title");
 const taskDescription = document.querySelector("#task-description");
 const taskDueDate = document.querySelector("#datepicker");
 const taskPriority = document.querySelector("#priority");
+const taskProjectDropdown = document.querySelector("#projects-dropdown");
 
 const projectSidebar = document.querySelector(".projects-sidebar");
-
+const projectTitles = document.querySelector(".project-titles");
 
 
 // show modal when addTaskbtn clicked
@@ -35,6 +36,7 @@ taskSubmitButton.addEventListener('click', () => {
     let description = taskDescription.value;
     let dueDate = taskDueDate.value;
     let priority = taskPriority.value;
+    let project = taskProjectDropdown.value; // add to the project hashmap
     const newTodo = new Todo(title, description, dueDate, priority);
     addTodo(newTodo);
     console.log(newTodo);
@@ -108,13 +110,14 @@ function renderProjectSection(project){
 }
 
 function displayProjectSection(){
+    projectTitles.innerHTML = "";
     projectList.forEach(project =>{
-        projectSidebar.append(renderProjectSection(project));
+        projectTitles.append(renderProjectSection(project));
     })
 }
 
 
-// project clicked
+// project clicked - this will show the todos later
 //Tip!: use container as eventhandler for dynamically added DOMS
 projectSidebar.addEventListener("click", (e) => {
     // Check if the clicked element is a projectSection
@@ -126,6 +129,8 @@ projectSidebar.addEventListener("click", (e) => {
 
 
 //create prebuilt project
-const allTodos = new Project("All Todos");
-projectList.push(allTodos);
-displayProjectSection();
+export function prebuiltProject(){
+    const allTodos = new Project("All Todos");
+    projectList.push(allTodos);
+    displayProjectSection();
+}

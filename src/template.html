@@ -21,10 +21,11 @@
           <div class="projects-sidebar">
             <H2>Projects</H2>
              <button id="addProjectButton">Add Project</button>
+             <div class="project-titles"></div>
          </div>   
        </div>
         <div class="todo-container" ></div>
-        <dialog class="modal" id="modal">
+        <dialog class="modal" id="modal">  <!-- Note: Remove <br> tags when styling in css  -->
           <form class="taskForm" method="dialog">
             <label for="title">Title</label><br>
             <input type="text" id="title" placeholder="Title"><br>
@@ -37,8 +38,11 @@
               <option value="high">High</option>
               <option value="medium">Medium</option>
               <option value="low">Low</option>
-
-            </select>
+            </select><br>
+            <label for="projects-dropdown">Project</label><br>
+            <select id="projects-dropdown">
+              <option value="Placeholder">Project Placeholder</option>
+            </select><br>
 
             <button type="input"  id="task-submit-button"> Create Task</button>
           </form>

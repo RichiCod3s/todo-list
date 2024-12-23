@@ -5,7 +5,8 @@ export const todoList = [];
 
 //add in ID Later
 export class Todo{
-    constructor(title,description, dueDate, priority){
+    constructor(title, description, dueDate, priority){
+        this.id = new Date.now();
         this.title = title;
         this.description = description;
         this.dueDate = dueDate;
