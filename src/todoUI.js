@@ -90,7 +90,7 @@ createProjectButton.addEventListener('click', () =>{
             projectList.push(newProject);
 
             displayProjectSection();
-
+            updateProjectDropdown();
            
             //clear and remove textbox from sidebar
             projectTextbox.value="";
@@ -123,14 +123,38 @@ projectSidebar.addEventListener("click", (e) => {
     // Check if the clicked element is a projectSection
     if (e.target && e.target.classList.contains('projectSection')) {
         console.log("PROJECT SECTION CLICKED");
-        //change to show todos in project array in the todoContainer
+        console.log(e.target.getAttribute("dataid"));
+          //change to show todos in project array in the todoContainer
+        // Get the data-id of the clicked project
+        const projectId = e.target.getAttribute("dataid");
+      
+        
     }
 });
 
+// show todos in project when clicked
+function displayProjectFolder(dataid){
+
+}
+
+// update the project dropdown list when creating a todo
+function updateProjectDropdown(){
+    taskProjectDropdown.innerHTML = "";
+    projectList.forEach(project => {
+        // create an element for each project with the project's name and id and use to populate the project dropdown menu
+        const option = document.createElement("option");
+        option.value = project.id;
+        option.textContent = project.name;
+        taskProjectDropdown.appendChild(option);
+    });
+}
 
 //create prebuilt project
 export function prebuiltProject(){
     const allTodos = new Project("All Todos");
     projectList.push(allTodos);
     displayProjectSection();
+    updateProjectDropdown();
 }
+
+
