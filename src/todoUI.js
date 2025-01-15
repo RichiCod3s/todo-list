@@ -36,10 +36,11 @@ taskSubmitButton.addEventListener('click', () => {
     let description = taskDescription.value;
     let dueDate = taskDueDate.value;
     let priority = taskPriority.value;
-    let project = taskProjectDropdown.value; // add to the project hashmap
+    let projectid = taskProjectDropdown.value; // add to the project hashmap
     const newTodo = new Todo(title, description, dueDate, priority);
     addTodo(newTodo);
     console.log(newTodo);
+    addTaskToProject(projectid, newTodo);
     displayTodos();
     // clear form text fields
     taskTitle.value = "";
@@ -66,7 +67,7 @@ export function displayTodos() {
     })
 }
 
-// PROJECTS
+// PROJECTS SECTIONS
 
 //user add a project functionality 
 createProjectButton.addEventListener('click', () =>{
@@ -101,7 +102,7 @@ createProjectButton.addEventListener('click', () =>{
   }
 })
 
-
+// Create a DOM element for a project to render in the sidebar
 function renderProjectSection(project){
     let projectSection =  createElementWithClass("div","projectSection",project.name);
     projectSection.setAttribute("dataid", project.id);
@@ -109,6 +110,8 @@ function renderProjectSection(project){
     return projectSection;
 }
 
+
+// Create project section DOM elements and append them to the sidebar
 function displayProjectSection(){
     projectTitles.innerHTML = "";
     projectList.forEach(project =>{
@@ -117,17 +120,23 @@ function displayProjectSection(){
 }
 
 
-// project clicked - this will show the todos later
+// project clicked - shows todos in project in main container
 //Tip!: use container as eventhandler for dynamically added DOMS
 projectSidebar.addEventListener("click", (e) => {
     // Check if the clicked element is a projectSection
     if (e.target && e.target.classList.contains('projectSection')) {
-        console.log("PROJECT SECTION CLICKED");
-        console.log(e.target.getAttribute("dataid"));
-          //change to show todos in project array in the todoContainer
+        console.log("PROJECT SECTION CLICKED"); // delete later
+        console.log(e.target.getAttribute("dataid")); // delete later
+         
         // Get the data-id of the clicked project
         const projectId = e.target.getAttribute("dataid");
-      
+        const project = projectList.find(proj => proj.id == projectId);
+
+        if(project){
+            console.log(project.displayTodos()); // delete later
+            //displays todo in project from main container
+            displayTodosfromProject(project);
+        }
         
     }
 });
@@ -147,6 +156,25 @@ function updateProjectDropdown(){
         option.textContent = project.name;
         taskProjectDropdown.appendChild(option);
     });
+}
+
+//add todo to selected project from dropdown menu
+function addTaskToProject(projectid, todo){
+    projectList.forEach(project => {
+        if(project.id == projectid){
+            project.addToProject(todo);
+        }
+    })
+}
+
+// display the todos in a project to main container
+export function displayTodosfromProject(project) {
+    todoContainer.innerHTML = "";   
+    project.displayTodos().forEach(todo => {
+        // Render each todo and append it to the container
+        todoContainer.append(renderTodoItem(todo));
+    });
+   
 }
 
 //create prebuilt project

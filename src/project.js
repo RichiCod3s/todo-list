@@ -18,6 +18,11 @@ export class Project{
     deleteTodo(todo){
         this.projectFolder.delete(todo.id);
     }
+
+      // Display all todos in the project
+      displayTodos() {
+        return Array.from(this.projectFolder.values()); // Convert Map values to an array
+    }
 }
 
 // project array
