@@ -16,6 +16,7 @@ console.log(greeting);
 
 
 // work on projects: add project option to todos - todo will display when project div is clicked on
-// continue next: added hashmap to hold todos in project. Use this to add/delete & display todos 
+
+// continue next: added hashmap to hold todos in project. Use this to add/delete -- add button functionality that will enable editing of todo
 
 prebuiltProject();

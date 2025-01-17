@@ -48,6 +48,29 @@
           </form>
          
         </dialog>
+        <dialog class="editModal" id="editModal">  <!-- Note: Remove <br> tags when styling in css  -->
+          <form class="editTaskForm" method="dialog">
+            <label for="editTitle">Title</label><br>
+            <input type="text" id="editTitle" placeholder="Title"><br>
+            <label for="editTask-description">Description</label><br>
+            <textarea id="editTask-description" rows="5" cols="30" placeholder="Add more details about your task..."></textarea><br>
+            <label for="editDatepicker">Task Due</label><br>
+            <input type="datetime-local" id="editDatepicker"><br>
+            <label for="editPriority">Priority</label><br>
+            <select id="editPriority">
+              <option value="high">High</option>
+              <option value="medium">Medium</option>
+              <option value="low">Low</option>
+            </select><br>
+            <label for="editProjects-dropdown">Project</label><br> <!--May need to change or edit this to "edit"-->
+            <select id="editProjects-dropdown">
+              <option value="Placeholder">Project Placeholder</option>
+            </select><br>
+
+            <button type="input"  id="editTask-submit-button"> Create Task</button>
+          </form>
+         
+        </dialog>
   
       </div>
     </div>
