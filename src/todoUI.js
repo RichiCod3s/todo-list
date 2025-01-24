@@ -26,7 +26,8 @@ const editTaskTitle = document.querySelector("#editTitle");
 const editTaskDescription = document.querySelector("#editTask-description");
 const editTaskDueDate = document.querySelector("#editDatepicker");
 const editTaskPriority = document.querySelector("#editPriority");
-const editTaskProjectDropdown = document.querySelector("#editProjects-dropdown"); // might need to refactor somwhere in projects
+const editTaskProjectDropdown = document.querySelector("#editProjects-dropdown"); 
+
 
 //constants for project
 const createProjectButton = document.querySelector("#addProjectButton");
@@ -58,7 +59,48 @@ taskSubmitButton.addEventListener('click', () => {
     // clear form text fields
     taskTitle.value = "";
     taskDescription.value = "";
-})
+});
+
+//show modal when the edit button is clicked
+function showEditModal(dataId){
+    const todoObject = todoList.find(todo => todo.id == dataId);
+ 
+    if(!todoObject){
+        console.error(`Todo with ID ${dataId} not found.`);
+        return; // Exit if the task is not found
+    }
+
+  editTaskTitle.value = todoObject.title;
+  editTaskDescription.value = todoObject.description;
+  editTaskDueDate.value= todoObject.dueDate;
+  editTaskPriority.value= todoObject.priority;
+  // projectid
+    
+    editModal.showModal(dataId);
+    
+    console.log(dataId);
+   
+}
+
+//edit a Todo object using modal
+function editTask(dataId){
+    editTaskSubmitButton.addEventListener('click', (e) =>{
+       
+        const todoObject = todoList.find(todo => todo.id == dataId); 
+        if(!todoObject){
+            console.error(`Todo with ID ${dataId} not found.`);
+            return; // Exit if the task is not found
+        }
+        
+    editTodo(todoObject,editTaskTitle.value, editTaskDescription.value, editTaskDueDate.value, editTaskPriority.value);
+  
+    displayTodos();
+
+        console.log(dataId);
+    
+    });
+}
+
 
 //ADD A DATA ATRIBUTE/ID TO THE ELEMENT SO YOU CAN DELETE - CHECK LIBRARY APP
 // renders Todo object into DOM element
@@ -78,10 +120,14 @@ function renderTodoItem(todo) {
     editButton.innerHTML = svgIconEditButton;
     editButton.setAttribute("data-id", todo.id);
 
-    editButton.addEventListener("click", (e) =>{
-        //ADD EDIT MODAL
-        editModal.showModal();
+    const dataId = editButton.getAttribute("data-id");
+
+    //edit task button functionality
+    editButton.addEventListener('click', () =>{
+        showEditModal(dataId);
+        editTask(dataId);
     });
+    
     
     let todoItem = createElementWithClass("div", "todoItem");
     todoItem.setAttribute("data-id", todo.id);// link DOM element to todo object
@@ -97,10 +143,19 @@ export function displayTodos() {
     })
 }
 
+//HERE1!!!!!!!!!!!!!!!!
 
-//edit todo
+//edit todo Object
+function editTodo(todo, title, description, dueDate, priority){
+ todo.title = title;
+ todo.description = description;
+ todo.dueDate = dueDate;
+ todo.priority = priority;
 
-function editTodo(todo){
+ removeTodoFromProject(todo);
+ let projectid = editTaskProjectDropdown.value;
+ addTaskToProject(projectid, todo);
+ console.log(todo);
 
 }
 
@@ -179,7 +234,7 @@ projectSidebar.addEventListener("click", (e) => {
     }
 });
 
-// show todos in project when clicked
+// show todos in project when clicked --- this can be deleted or implemented
 function displayProjectFolder(dataid){
 
 }
@@ -187,12 +242,19 @@ function displayProjectFolder(dataid){
 // update the project dropdown list when creating a todo
 function updateProjectDropdown(){
     taskProjectDropdown.innerHTML = "";
+    editTaskProjectDropdown.innerHTML = "";
     projectList.forEach(project => {
         // create an element for each project with the project's name and id and use to populate the project dropdown menu
         const option = document.createElement("option");
         option.value = project.id;
         option.textContent = project.name;
         taskProjectDropdown.appendChild(option);
+
+        // update edit dropdown - populate dropdown with option element 
+        const editOption = document.createElement("option");
+        editOption.value = project.id;
+        editOption.textContent = project.name;
+        editTaskProjectDropdown.appendChild(editOption); // dropdowns could be shared but not sure if I should break seprating concerns
     });
 }
 
@@ -204,6 +266,30 @@ function addTaskToProject(projectid, todo){
         }
     })
 }
+
+function findProject(todo) {
+    // Iterate through each project in the projectList
+    for (const project of projectList) {
+        // Check if the todo exists in the project's Map
+        if (project.projectFolder.has(todo.id)) {
+            console.log("Found project: ", project);
+            return project; // Return the project if the todo is found
+        }
+    }
+    console.error("No project found containing the todo:", todo);
+    return null; // Return null if the todo is not found
+}
+
+
+function removeTodoFromProject(todo) {
+    const project = findProject(todo);
+    if (project) {
+        project.deleteTodo(todo.id);
+    } else {
+        console.error("Could not remove todo because no project was found:", todo);
+    }
+}
+
 
 // display the todos in a project to main container
 export function displayTodosfromProject(project) {

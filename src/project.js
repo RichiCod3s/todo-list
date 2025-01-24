@@ -6,13 +6,13 @@ export class Project{
         this.projectFolder = new Map();
         this.id = this.name + Date.now();
     }
-    //holds todos -- consider making this a hashmap/map
+    
     addToProject(todo){
         this.projectFolder.set(todo.id, todo);
     }
 
     getTodo(todo){
-    this.projectFolder.get(todo.id);
+    return this.projectFolder.get(todo.id);
     }
 
     deleteTodo(todo){
