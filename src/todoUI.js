@@ -34,10 +34,9 @@ const createProjectButton = document.querySelector("#addProjectButton");
 const projectSidebar = document.querySelector(".projects-sidebar");
 const projectTitles = document.querySelector(".project-titles");
 
-
+let selectedTodo = null;
 
 // show modal when addTaskbtn clicked
-
     createTaskButton.addEventListener('click', () => {
         modal.showModal();
     })
@@ -51,10 +50,10 @@ taskSubmitButton.addEventListener('click', () => {
     let dueDate = taskDueDate.value;
     let priority = taskPriority.value;
     let projectid = taskProjectDropdown.value; // add to the project hashmap
-    const newTodo = new Todo(title, description, dueDate, priority);
+    const newTodo = new Todo(title, description, dueDate, priority, projectid);
     addTodo(newTodo);
     console.log(newTodo);
-    addTaskToProject(projectid, newTodo);
+    addTodoToProject(projectid, newTodo);
     displayTodos();
     // clear form text fields
     taskTitle.value = "";
@@ -63,44 +62,62 @@ taskSubmitButton.addEventListener('click', () => {
 
 //show modal when the edit button is clicked
 function showEditModal(dataId){
-    const todoObject = todoList.find(todo => todo.id == dataId);
+     selectedTodo = todoList.find(todos => todos.id == dataId);
  
-    if(!todoObject){
+    if(!selectedTodo){
         console.error(`Todo with ID ${dataId} not found.`);
         return; // Exit if the task is not found
     }
 
-  editTaskTitle.value = todoObject.title;
-  editTaskDescription.value = todoObject.description;
-  editTaskDueDate.value= todoObject.dueDate;
-  editTaskPriority.value= todoObject.priority;
-  // projectid
+  editTaskTitle.value = selectedTodo.title;
+  editTaskDescription.value = selectedTodo.description;
+  editTaskDueDate.value= selectedTodo.dueDate;
+  editTaskPriority.value= selectedTodo.priority;
+  
     
-    editModal.showModal(dataId);
+    editModal.showModal();
     
     console.log(dataId);
    
 }
 
-//edit a Todo object using modal
-function editTask(dataId){
-    editTaskSubmitButton.addEventListener('click', (e) =>{
-       
-        const todoObject = todoList.find(todo => todo.id == dataId); 
-        if(!todoObject){
-            console.error(`Todo with ID ${dataId} not found.`);
-            return; // Exit if the task is not found
-        }
-        
-    editTodo(todoObject,editTaskTitle.value, editTaskDescription.value, editTaskDueDate.value, editTaskPriority.value);
-  
-    displayTodos();
 
-        console.log(dataId);
-    
-    });
-}
 
+// Attach event listener ONCE, updating only the selected todo
+editTaskSubmitButton.addEventListener("click", () => {
+    if (!selectedTodo) {
+        console.error("No todo selected for editing.");
+        return;
+    }
+
+    editTodo(selectedTodo, 
+        editTaskTitle.value, 
+        editTaskDescription.value, 
+        editTaskDueDate.value, 
+        editTaskPriority.value, 
+        editTaskProjectDropdown.value
+    );
+
+    displayTodos(); // Refresh UI
+    selectedTodo = null; // Reset the selected todo after edit
+});
+
+
+//edit todo Object
+function editTodo(todoObject, newTitle, newDescription, newDueDate, newPriority, newTodoProjectIdNumber){
+    removeTodoFromProject(todoObject);
+    todoObject.title = newTitle;
+    todoObject.description = newDescription;
+    todoObject.dueDate = newDueDate;
+    todoObject.priority = newPriority;
+    todoObject.todoProjectIdNumber = newTodoProjectIdNumber;
+   
+   
+    addTodoToProject(newTodoProjectIdNumber, todoObject);
+    console.log(todoObject);
+   
+   }
+   
 
 //ADD A DATA ATRIBUTE/ID TO THE ELEMENT SO YOU CAN DELETE - CHECK LIBRARY APP
 // renders Todo object into DOM element
@@ -125,7 +142,6 @@ function renderTodoItem(todo) {
     //edit task button functionality
     editButton.addEventListener('click', () =>{
         showEditModal(dataId);
-        editTask(dataId);
     });
     
     
@@ -143,21 +159,7 @@ export function displayTodos() {
     })
 }
 
-//HERE1!!!!!!!!!!!!!!!!
 
-//edit todo Object
-function editTodo(todo, title, description, dueDate, priority){
- todo.title = title;
- todo.description = description;
- todo.dueDate = dueDate;
- todo.priority = priority;
-
- removeTodoFromProject(todo);
- let projectid = editTaskProjectDropdown.value;
- addTaskToProject(projectid, todo);
- console.log(todo);
-
-}
 
 
 // PROJECTS SECTIONS
@@ -199,7 +201,6 @@ createProjectButton.addEventListener('click', () =>{
 function renderProjectSection(project){
     let projectSection =  createElementWithClass("div","projectSection",project.name);
     projectSection.setAttribute("dataid", project.id);
-
     return projectSection;
 }
 
@@ -259,7 +260,7 @@ function updateProjectDropdown(){
 }
 
 //add todo to selected project from dropdown menu
-function addTaskToProject(projectid, todo){
+function addTodoToProject(projectid, todo){
     projectList.forEach(project => {
         if(project.id == projectid){
             project.addToProject(todo);
@@ -267,27 +268,19 @@ function addTaskToProject(projectid, todo){
     })
 }
 
-function findProject(todo) {
-    // Iterate through each project in the projectList
-    for (const project of projectList) {
-        // Check if the todo exists in the project's Map
-        if (project.projectFolder.has(todo.id)) {
-            console.log("Found project: ", project);
-            return project; // Return the project if the todo is found
-        }
-    }
-    console.error("No project found containing the todo:", todo);
-    return null; // Return null if the todo is not found
-}
 
-
+// later
 function removeTodoFromProject(todo) {
-    const project = findProject(todo);
-    if (project) {
-        project.deleteTodo(todo.id);
-    } else {
-        console.error("Could not remove todo because no project was found:", todo);
-    }
+ let todoProjectIdNumber = todo.todoProjectIdNumber;
+ 
+  let project = projectList.find(project =>  project.id == todoProjectIdNumber);
+
+  if(project){
+    project.deleteTodo(todo);
+  }else{
+    console.error("no project");
+  }
+ 
 }
 
 

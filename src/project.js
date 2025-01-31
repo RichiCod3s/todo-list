@@ -3,25 +3,25 @@ export const projectList = [];
 export class Project{
     constructor(name){
         this.name = name;
-        this.projectFolder = new Map();
+        this.projectFolder = [];
         this.id = this.name + Date.now();
     }
     
     addToProject(todo){
-        this.projectFolder.set(todo.id, todo);
+        this.projectFolder.push(todo);
     }
 
-    getTodo(todo){
-    return this.projectFolder.get(todo.id);
-    }
 
     deleteTodo(todo){
-        this.projectFolder.delete(todo.id);
+       const index = this.projectFolder.findIndex(t => t.id === todo.id);
+       if(index !== -1){
+        this.projectFolder.splice(index,1);
+       }
     }
 
       // Display all todos in the project
       displayTodos() {
-        return Array.from(this.projectFolder.values()); // Convert Map values to an array
+        return this.projectFolder 
     }
 }
 

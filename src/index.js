@@ -15,10 +15,6 @@ console.log(greeting);
 //8. work on projects and to-do functionality 
 
 
-// work on projects: add project option to todos - todo will display when project div is clicked on
-
-// continue next: added hashmap to hold todos in project. Use this to add/delete -- add button functionality that will enable editing of todo
 
 
-// find Project and removedTaskFromProject is not working. Refactor code so that the todo saves the project id it is attached to. Use this to find the project it needs to be removed from
 prebuiltProject();
