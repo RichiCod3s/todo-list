@@ -30,6 +30,19 @@ body {
     align-items: center;
     gap: 1rem;
   }
+
+  .task-sections, .project-titles{
+    font: bold;
+    font-size: 1rem;
+    margin: .5rem;
+  }
+
+  .task-sections:hover, .project-titles:hover{
+    font-size: 1.2rem;
+    color: blue;
+    cursor: pointer;
+  }
+
   .todo-container{
     background-color: whitesmoke;
     display: flex;
@@ -68,4 +81,7 @@ body {
   .todoEditButton:hover{
     /* fill used to change colour of SGV icon */
     fill:deepskyblue;
+    cursor: pointer;
   }
+
+  

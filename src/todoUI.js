@@ -28,6 +28,10 @@ const editTaskDueDate = document.querySelector("#editDatepicker");
 const editTaskPriority = document.querySelector("#editPriority");
 const editTaskProjectDropdown = document.querySelector("#editProjects-dropdown"); 
 
+//constants for tasks 
+const allTasks = document.getElementById("all-tasks"); //getElementByID - was having DOM issue with queryselector
+const dueToday = document.getElementById("due-today-tasks");
+
 
 //constants for project
 const createProjectButton = document.querySelector("#addProjectButton");
@@ -160,9 +164,19 @@ export function displayTodos() {
 }
 
 
+//task sidebar when task div is clicked 
+allTasks.addEventListener("click", () => {
+    displayTodos();
+});
+
+//***********************//
+dueToday.addEventListener("click", () =>{
+console.log("START HERE TOMORROW!");
+});
 
 
-// PROJECTS SECTIONS
+
+// *** PROJECTS SECTIONS ***
 
 //user add a project functionality 
 createProjectButton.addEventListener('click', () =>{

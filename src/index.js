@@ -15,6 +15,10 @@ console.log(greeting);
 //8. work on projects and to-do functionality 
 
 
+//*ONE COMMIT A DAY*
 
+// *make fixed section (top left of sidebar) - All Tasks, Due Today, Upcoming, Completed (add checkbox);*
+
+//then work on a sort by due date 
 
 prebuiltProject();
