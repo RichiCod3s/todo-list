@@ -1,4 +1,5 @@
 //DOM Related Module
+import { isToday } from "date-fns";
 import { Project } from "./project";
 import { projectList } from "./project";
 import { addTodo } from "./todo";
@@ -28,9 +29,10 @@ const editTaskDueDate = document.querySelector("#editDatepicker");
 const editTaskPriority = document.querySelector("#editPriority");
 const editTaskProjectDropdown = document.querySelector("#editProjects-dropdown"); 
 
-//constants for tasks 
-const allTasks = document.getElementById("all-tasks"); //getElementByID - was having DOM issue with queryselector
+//constants for tasks  - getElementByID - was having DOM issue with queryselector
+const allTasks = document.getElementById("all-tasks"); 
 const dueToday = document.getElementById("due-today-tasks");
+const upcoming = document.getElementById("Upcoming-tasks");
 
 
 //constants for project
@@ -158,23 +160,37 @@ function renderTodoItem(todo) {
 //display the Todos to container
 export function displayTodos() {
     todoContainer.innerHTML = "";
+     // Render each todo and append it to the container
     todoList.forEach(todo => {
         todoContainer.append(renderTodoItem(todo));
     })
 }
 
 
-//task sidebar when task div is clicked 
+// todo/task sidebar when task div is clicked - rephrase this section
+
+//show all todos
 allTasks.addEventListener("click", () => {
     displayTodos();
 });
 
-//***********************//
-dueToday.addEventListener("click", () =>{
-console.log("START HERE TOMORROW!");
+//show todos due today
+dueToday.addEventListener("click", () => {
+   
+    todoContainer.innerHTML = "";
+    // Filter todos that are due today using date-fns
+    const todayTodos = todoList.filter(todo => isToday(new Date(todo.dueDate)));
+
+    // Render each filtered todo and append it to the container
+    todayTodos.forEach(todo => {
+        todoContainer.append(renderTodoItem(todo));
+    });
 });
 
-
+// show upcoming todos
+ upcoming.addEventListener("click", () =>{
+    console.log("START HERE TOMORROW!");
+ });
 
 // *** PROJECTS SECTIONS ***
 
