@@ -1,5 +1,5 @@
 //DOM Related Module
-import { isToday } from "date-fns";
+import { isFuture, isToday } from "date-fns";
 import { Project } from "./project";
 import { projectList } from "./project";
 import { addTodo } from "./todo";
@@ -32,8 +32,8 @@ const editTaskProjectDropdown = document.querySelector("#editProjects-dropdown")
 //constants for tasks  - getElementByID - was having DOM issue with queryselector
 const allTasks = document.getElementById("all-tasks"); 
 const dueToday = document.getElementById("due-today-tasks");
-const upcoming = document.getElementById("Upcoming-tasks");
-
+const upcomingTasks = document.getElementById("upcoming-tasks");
+const completedTasks = document.getElementById("completed-tasks");
 
 //constants for project
 const createProjectButton = document.querySelector("#addProjectButton");
@@ -169,12 +169,12 @@ export function displayTodos() {
 
 // todo/task sidebar when task div is clicked - rephrase this section
 
-//show all todos
+//display all todos
 allTasks.addEventListener("click", () => {
     displayTodos();
 });
 
-//show todos due today
+// display todos due today
 dueToday.addEventListener("click", () => {
    
     todoContainer.innerHTML = "";
@@ -187,9 +187,22 @@ dueToday.addEventListener("click", () => {
     });
 });
 
-// show upcoming todos
- upcoming.addEventListener("click", () =>{
-    console.log("START HERE TOMORROW!");
+// display upcoming todos
+ upcomingTasks.addEventListener("click", () =>{
+    
+    todoContainer.innerHTML = "";
+      // Filter todos that are in the future using date-fns
+    const upcomingTodos = todoList.filter(todo => isFuture(new Date(todo.dueDate)));
+
+    // Render each filtered todo and append it to the container
+    upcomingTodos.forEach(todo => {
+        todoContainer.append(renderTodoItem(todo));
+    });
+ });
+
+ // display completed todos
+ completedTasks.addEventListener("click", () => {
+    console.log("hi");
  });
 
 // *** PROJECTS SECTIONS ***

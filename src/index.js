@@ -19,6 +19,6 @@ console.log(greeting);
 
 // *make fixed section (top left of sidebar) - All Tasks, Due Today, Upcoming, Completed (add checkbox);*
 
-//then work on a sort by due date 
+//add check button to todo. Once checked add to completed/remove from other filters
 
 prebuiltProject();
