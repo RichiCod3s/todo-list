@@ -12,6 +12,7 @@ export class Todo{
         this.dueDate = dueDate;
         this.priority = priority;
         this.todoProjectIdNumber=todoProjectIdNumber; // long name for now to dubug 
+        this.completed = false;
     }
 
   

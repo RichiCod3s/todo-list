@@ -9,6 +9,7 @@ import { createElementWithClass } from "./utils";
 
 //6. DOM Elements
 const todoContainer = document.querySelector(".todo-container");
+const completed = document.querySelector(".completed");
 
 // Constants for the create modal
 const createTaskButton = document.querySelector("#addTaskButton");
@@ -29,11 +30,12 @@ const editTaskDueDate = document.querySelector("#editDatepicker");
 const editTaskPriority = document.querySelector("#editPriority");
 const editTaskProjectDropdown = document.querySelector("#editProjects-dropdown"); 
 
-//constants for tasks  - getElementByID - was having DOM issue with queryselector
+//constants for tasks sections  - getElementByID - was having DOM issue with queryselector
 const allTasks = document.getElementById("all-tasks"); 
 const dueToday = document.getElementById("due-today-tasks");
 const upcomingTasks = document.getElementById("upcoming-tasks");
 const completedTasks = document.getElementById("completed-tasks");
+
 
 //constants for project
 const createProjectButton = document.querySelector("#addProjectButton");
@@ -108,6 +110,23 @@ editTaskSubmitButton.addEventListener("click", () => {
     selectedTodo = null; // Reset the selected todo after edit
 });
 
+//START HERE TOMORROW - move to completed section - may need new array
+// ** REMINDER: Linking event listener to container is best practice for dynamically added elements **
+todoContainer.addEventListener("change", (event) => {
+    if (event.target.classList.contains("completed")) {
+        const dataid = event.target.getAttribute("data-id");
+      const todo = todoList.find( todo => todo.id == dataid);
+
+        console.log(event.target.checked ? "Box checked ✅" : "Box not checked ❌");
+        console.log(dataid);
+        console.log(todo);// remove all console logs later
+
+        // checkbox boolean = todo completed boolean
+        todo.completed = event.target.checked;
+    }
+});
+
+
 
 //edit todo Object
 function editTodo(todoObject, newTitle, newDescription, newDueDate, newPriority, newTodoProjectIdNumber){
@@ -133,7 +152,10 @@ function renderTodoItem(todo) {
     let todoDueDate = createElementWithClass("p", "todoDueDate", todo.dueDate);   // works - make more readable (date-fns)
     let todoPriority = createElementWithClass("p", "todoPriority", todo.priority);
     let editButton = createElementWithClass("button","todoEditButton");
-    
+    let completedCheckbox = createElementWithClass("INPUT", "completed");
+    completedCheckbox.setAttribute("type", "checkbox");
+
+
     let svgIconEditButton = `
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
       <title>square-edit-outline</title>
@@ -142,8 +164,11 @@ function renderTodoItem(todo) {
     `;
     editButton.innerHTML = svgIconEditButton;
     editButton.setAttribute("data-id", todo.id);
-
+    completedCheckbox.setAttribute("data-id", todo.id);
     const dataId = editButton.getAttribute("data-id");
+    
+    // if completed - render the checkbox already checked. // consider greying out the todo
+     completedCheckbox.checked = todo.completed;
 
     //edit task button functionality
     editButton.addEventListener('click', () =>{
@@ -153,7 +178,7 @@ function renderTodoItem(todo) {
     
     let todoItem = createElementWithClass("div", "todoItem");
     todoItem.setAttribute("data-id", todo.id);// link DOM element to todo object
-    todoItem.append(todoTitle, todoDescription, todoDueDate, todoPriority, editButton);
+    todoItem.append(todoTitle, todoDescription, todoDueDate, todoPriority, editButton, completedCheckbox);
     return todoItem;
 }
 
@@ -203,6 +228,13 @@ dueToday.addEventListener("click", () => {
  // display completed todos
  completedTasks.addEventListener("click", () => {
     console.log("hi");
+    todoContainer.innerHTML = "";
+
+    const completedTodos = todoList.filter(todo => todo.completed);
+    completedTodos.forEach(todo =>{
+    todoContainer.append(renderTodoItem(todo));
+    });
+
  });
 
 // *** PROJECTS SECTIONS ***
